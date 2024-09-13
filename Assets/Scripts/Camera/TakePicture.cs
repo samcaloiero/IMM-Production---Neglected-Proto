@@ -13,24 +13,24 @@ public class TakePictures : MonoBehaviour
 	
     void Update()
     {
-    	if( Input.GetMouseButtonDown( 0 ) )
-    	{
-    		// Don't attempt to use the camera if it is already open
-    		if( NativeCamera.IsCameraBusy() )
-    			return;
-    			
-    		if( Input.mousePosition.x < Screen.width / 2 )
-    		{
-    			// Take a picture with the camera
-    			// If the captured image's width and/or height is greater than 512px, down-scale it
-    			TakePicture( 512 );
-    		}
-    		else
-    		{
-    			// Record a video with the camera
-    			RecordVideo();
-    		}
-    	}
+    	// if( Input.GetMouseButtonDown( 0 ) )
+    	// {
+    	// 	// Don't attempt to use the camera if it is already open
+    	// 	if( NativeCamera.IsCameraBusy() )
+    	// 		return;
+    	// 		
+    	// 	if( Input.mousePosition.x < Screen.width / 2 )
+    	// 	{
+    	// 		// Take a picture with the camera
+    	// 		// If the captured image's width and/or height is greater than 512px, down-scale it
+    	// 		TakePicture( 512 );
+    	// 	}
+    	// 	else
+    	// 	{
+    	// 		// Record a video with the camera
+    	// 		RecordVideo();
+    	// 	}
+    	// }
     }
     
     // Example code doesn't use this function but it is here for reference. It's recommended to ask for permissions manually using the
@@ -41,7 +41,7 @@ public class TakePictures : MonoBehaviour
     	Debug.Log( "Permission result: " + permission );
     }
     
-    private void TakePicture( int maxSize )
+    public void TakePicture( int maxSize )
     {
     	NativeCamera.Permission permission = NativeCamera.TakePicture( ( path ) =>
     	{
