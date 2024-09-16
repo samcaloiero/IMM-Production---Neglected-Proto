@@ -1,37 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TakePictures : MonoBehaviour
 {
 
 	private bool camAccess;
+	public Image targetImagePrefab;
+	public Transform parentContainer;
 	void Awake()
 	{
 		RequestPermissionAsynchronously(camAccess);
 	}
 	
-    void Update()
-    {
-    	// if( Input.GetMouseButtonDown( 0 ) )
-    	// {
-    	// 	// Don't attempt to use the camera if it is already open
-    	// 	if( NativeCamera.IsCameraBusy() )
-    	// 		return;
-    	// 		
-    	// 	if( Input.mousePosition.x < Screen.width / 2 )
-    	// 	{
-    	// 		// Take a picture with the camera
-    	// 		// If the captured image's width and/or height is greater than 512px, down-scale it
-    	// 		TakePicture( 512 );
-    	// 	}
-    	// 	else
-    	// 	{
-    	// 		// Record a video with the camera
-    	// 		RecordVideo();
-    	// 	}
-    	// }
-    }
+    
     
     // Example code doesn't use this function but it is here for reference. It's recommended to ask for permissions manually using the
     // RequestPermissionAsync methods prior to calling NativeCamera functions
@@ -56,41 +39,22 @@ public class TakePictures : MonoBehaviour
     				return;
     			}
     
-    			// Assign texture to a temporary quad and destroy it after 5 seconds
-    			GameObject quad = GameObject.CreatePrimitive( PrimitiveType.Quad );
-    			quad.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2.5f;
-    			quad.transform.forward = Camera.main.transform.forward;
-    			quad.transform.localScale = new Vector3( 1f, texture.height / (float) texture.width, 1f );
-    			
-    			Material material = quad.GetComponent<Renderer>().material;
-    			if( !material.shader.isSupported ) // happens when Standard shader is not included in the build
-    				material.shader = Shader.Find( "Legacy Shaders/Diffuse" );
-    
-    			material.mainTexture = texture;
-    				
-    			Destroy( quad, 5f );
-    
-    			// If a procedural texture is not destroyed manually, 
-    			// it will only be freed after a scene change
-    			Destroy( texture, 5f );
+    			Sprite capturedSprite = Sprite.Create(texture, new Rect(0,0, texture.width, texture.height), new Vector2(0.5f,0.5f));
+			    
+			    Image newImage = Instantiate(targetImagePrefab, parentContainer);
+			    newImage.sprite = capturedSprite;
+			    newImage.preserveAspect = true;
+			    
     		}
     	}, maxSize );
     
     	Debug.Log( "Permission result: " + permission );
     }
     
-    private void RecordVideo()
+
+    public void CreateTextureFromImage()
     {
-    	NativeCamera.Permission permission = NativeCamera.RecordVideo( ( path ) =>
-    	{
-    		Debug.Log( "Video path: " + path );
-    		if( path != null )
-    		{
-    			// Play the recorded video
-    			Handheld.PlayFullScreenMovie( "file://" + path );
-    		}
-    	} );
-    
-    	Debug.Log( "Permission result: " + permission );
+	    
     }
+    
 }
