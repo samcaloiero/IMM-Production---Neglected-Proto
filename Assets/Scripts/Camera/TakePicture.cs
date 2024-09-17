@@ -7,8 +7,12 @@ public class TakePictures : MonoBehaviour
 {
 
 	private bool camAccess;
+
+	public GameObject prefabPanel;
 	public Image targetImagePrefab;
 	public Transform parentContainer;
+	public RectTransform rectTransform;
+	public int containerHeightAddAmnt = 100;
 	void Awake()
 	{
 		RequestPermissionAsynchronously(camAccess);
@@ -38,9 +42,16 @@ public class TakePictures : MonoBehaviour
     				Debug.Log( "Couldn't load texture from " + path );
     				return;
     			}
-    
-    			Sprite capturedSprite = Sprite.Create(texture, new Rect(0,0, texture.width, texture.height), new Vector2(0.5f,0.5f));
 			    
+			    //Increased size of scrollable content
+			    rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y + containerHeightAddAmnt);
+			    
+				//Image creation stuff
+    			Sprite capturedSprite = Sprite.Create(texture, new Rect(0,0, texture.width, texture.height), new Vector2(0.5f,0.5f));
+			    //Instantiate Prefab Panel
+			    GameObject newPanel = Instantiate(prefabPanel, parentContainer);
+			    
+			    //Inside Instantiated prefab panel add find image panel and add image to it
 			    Image newImage = Instantiate(targetImagePrefab, parentContainer);
 			    newImage.sprite = capturedSprite;
 			    newImage.preserveAspect = true;
