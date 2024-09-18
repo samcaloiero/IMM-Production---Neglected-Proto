@@ -13,6 +13,7 @@ public class TakePictures : MonoBehaviour
 	public Transform parentContainer;
 	public RectTransform rectTransform;
 	public int containerHeightAddAmnt = 100;
+	public GameObject promptQuestion;
 	void Awake()
 	{
 		RequestPermissionAsynchronously(camAccess);
@@ -49,14 +50,27 @@ public class TakePictures : MonoBehaviour
 				//Image creation stuff
     			Sprite capturedSprite = Sprite.Create(texture, new Rect(0,0, texture.width, texture.height), new Vector2(0.5f,0.5f));
 			    //Instantiate Prefab Panel
+			    //Prefab Panel that holds Image and Text box
 			    GameObject newPanel = Instantiate(prefabPanel, parentContainer);
 			    
+			    // Transform childPanel = newPanel.transform.Find("ChildPanelImage");
+			    // Image childImage = childPanel.GetComponent<Image>();
+			    // if (childImage != null)
+			    // {
+				   //  childImage.sprite = capturedSprite;
+			    // }
+
+			    Image childImageComponent = newPanel.GetComponentInChildren<Image>();
+			    if (childImageComponent != null)
+			    {
+				    childImageComponent.sprite = capturedSprite;
+			    }
 			    //Inside Instantiated prefab panel add find image panel and add image to it
-			    Image newImage = Instantiate(targetImagePrefab, parentContainer);
-			    newImage.sprite = capturedSprite;
-			    newImage.preserveAspect = true;
-			    
-    		}
+			    // Image newImage = Instantiate(targetImagePrefab, parentContainer);
+			    //    newImage.sprite = capturedSprite;
+			    //    newImage.preserveAspect = true;
+
+		    }
     	}, maxSize );
     
     	Debug.Log( "Permission result: " + permission );
